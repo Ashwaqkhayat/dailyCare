@@ -19,8 +19,6 @@ public class personalApp {
     public static String heartRateStatus2;
     public static String oxygenLevelStatus2;
 
-    public static boolean[] alerted = new boolean[4];
-
     public static void main(String argv[]) throws Exception {
         // InetAddress addr = InetAddress.getByName("188,248,50,1");
         // String host = addr.getHostName();
@@ -68,24 +66,24 @@ public class personalApp {
 
         PrintWriter toClient = new PrintWriter(socket.getOutputStream(), true);
 
-        String alertMessageIsSent = " . An alert message is sent to the Medical Server.";
-
+        String alertMessageIsSent = "An alert message is sent to the Medical Server.";
         while (true) {
+
+            boolean[] alerted = new boolean[4];
             formattedDate = fromCLient.readLine();
+
             temperature = Double.valueOf(fromCLient.readLine());
             oxygenLevel = Double.valueOf(fromCLient.readLine());
             heartRate = Double.valueOf(fromCLient.readLine());
 
-            boolean[] alerted = { false, false, false, false };
-
             // Send messages to medical server ==============================
 
             // Send values to the medical server
-            toServer.println(temperature);
-            toServer.println(oxygenLevel);
-            toServer.println(heartRate);
 
-            decision();
+            toServer.println(String.valueOf(temperature));
+            toServer.println(String.valueOf(oxygenLevel));
+            toServer.println(String.valueOf(heartRate));
+            alerted = decision();
 
             System.out.println(tempStatus2);
             if (alerted[0]) {
@@ -105,7 +103,17 @@ public class personalApp {
             System.out.println("\n");
 
             if ((alerted[0] || alerted[1] || alerted[2] || alerted[3])) {
-                toServer.println(tempStatus2 + "\n " + heartRateStatus2 + "\n " + oxygenLevelStatus2);
+                
+                toServer.println((tempStatus2));
+                toServer.println((heartRateStatus2));
+                toServer.println((oxygenLevelStatus2));
+                toServer.println("true");
+            } else {
+                
+                toServer.println("\b");
+                toServer.println("\b");
+                toServer.println("\b");
+                toServer.println("false");
             }
 
             if (formattedDate == null)
@@ -123,7 +131,8 @@ public class personalApp {
     }
 
     // A method to processes the recevied sensor data
-    public static void decision() {
+    public static boolean[] decision() {
+        boolean alerted[] = new boolean[4];
         if (temperature > 38) {
             alerted[0] = true;
             tempStatus = "high " + temperature;
@@ -146,11 +155,11 @@ public class personalApp {
             oxygenLevelStatus = "normal";
         }
 
-        tempStatus2 = "At date: " + formattedDate + ", Temperature is " + tempStatus + " ";
-        heartRateStatus2 = "At date: " + formattedDate + ", Heart rate is " + heartRateStatus + " ";
-        oxygenLevelStatus2 = "At date: " + formattedDate + ", Oxygen saturation is " + oxygenLevelStatus + " ";
-        System.out.println(tempStatus2 + "/n" + heartRateStatus2 + "/n" + oxygenLevelStatus2);
-        System.out.println(alerted[0] + "" + alerted[1] + "" + alerted[2] + "" + alerted[3]);
+        tempStatus2 = formattedDate + ", Temperature is " + tempStatus + " ";
+        heartRateStatus2 = formattedDate + ", Heart rate is " + heartRateStatus + " ";
+        oxygenLevelStatus2 = formattedDate + ", Oxygen saturation is " + oxygenLevelStatus + " ";
+
+        return alerted;
     }
 
 }
