@@ -37,11 +37,11 @@ public class medServer {
                 oxygenLevel = Double.valueOf(fromClient.readLine());
                 heartRate = Double.valueOf(fromClient.readLine());
 
-                boolean abmormal = Boolean.valueOf(fromClient.readLine());
+                boolean abnormal = Boolean.valueOf(fromClient.readLine());
 
                 // Print patient's status ======================================
                 // Choose and print appropriate action based on patient's information
-                if (abmormal) {
+                if (abnormal) {
                     System.out.println(fromClient.readLine());
                     System.out.println(fromClient.readLine());
                     System.out.println(fromClient.readLine());
