@@ -3,9 +3,9 @@
 import java.io.*;
 import java.net.*;
 import java.time.LocalDateTime;
-
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class sensorApplication {
     public static double temperature;
@@ -46,9 +46,9 @@ public class sensorApplication {
             oxygenLevel = RandomOxygenLevel();
 
             // display data in sensor command
-            System.out.println(formattedDate + ", sensed temperature is " + temperature);
-            System.out.println(formattedDate + ", sensed heart rate is " + heartRate);
-            System.out.println(formattedDate + ", sensed oxygen saturation is " + oxygenLevel);
+            System.out.println(formattedDate + ", sensed temperature is "+ temperature);
+            System.out.printf("%s%s%.0f%n",formattedDate , ", sensed heart rate is " , heartRate);
+            System.out.printf("%s%s%.0f%n",formattedDate , ", sensed oxygen saturation is " , oxygenLevel);
             System.out.println();
 
             // send values to personalApp server
@@ -67,8 +67,8 @@ public class sensorApplication {
     }
 
     // Generating random temperature
-    public static int RandomTemperature() {
-        return (((int) ((Math.random() * (41 - 36)) + 36) * 100) / 100);
+    public static double RandomTemperature() {
+        return ((int)(ThreadLocalRandom.current().nextDouble(36, 41)*10))/10.0; 
     }
 
     // Generating random heart rate
