@@ -73,7 +73,7 @@ public class sensorApplication {
 
     // Generating random heart rate
     public static int RandomHeartRate() {
-        return (int) ((Math.random() * (100 - 60)) + 60);
+        return (int) ((Math.random() * (120 - 50)) + 50);
     }
 
     // Generating random oxygen level
