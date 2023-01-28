@@ -1,15 +1,13 @@
 
-//Sensor application client
+//Sensor Application Client
 import java.io.*;
 import java.net.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class sensorApplication {
-
     public static double temperature;
     public static double heartRate;
     public static double oxygenLevel;
@@ -18,38 +16,26 @@ public class sensorApplication {
     public static DateTimeFormatter myFormatObj;
     public static String formattedDate;
 
-    public static int counter = 0;
-    // Scanner object creation
+    // Scanner to read user inputs
     public static Scanner sc = new Scanner(System.in);
 
     public static void main(String argv[]) throws Exception {
-
-        // InetAddress addr = InetAddress.getByName("188,248,50,1");
-        // String host = addr.getHostName();
-
-        System.out.println("Call me last");
+        
+        // Client Socket of SensorApp (To act as client)
         Socket clientSocket = new Socket("localhost", 6666);
         PrintWriter toServer = new PrintWriter(clientSocket.getOutputStream(), true);
-        // BufferedReader fromServer = new BufferedReader(new
-        // InputStreamReader(clientSocket.getInputStream()));
-        // BufferedReader readFromServerBuffer = new BufferedReader(new
-        // InputStreamReader(System.in));
 
         // Read sensor execution time
-        System.out.println("How long do you want the Sensor Application to run (in seconds)?" +
-                "\nNote: The minimum execution time is 60sec.\n");
-        long time = sc.nextLong();
         // if the user input is less than 60 sec, then set the timer to 60sec.
-        if (time < 60)
-            time = 60;
+        System.out.println("How long do you want the Sensor Application to run (in seconds)?" +
+                "\nNote: The minimum execution time is 60sec.");
+        long time = sc.nextLong();
+        if (time < 60) time = 60;
 
-        System.out.println("Time=" + time);
         long timeLimit = Timer(time);
-        // Timer
+        
+        // Keep connection open as long as Timer hasn't finished
         while (System.currentTimeMillis() < timeLimit) {
-            ////// System.out.println((System.currentTimeMillis() / 1000));
-            ////// System.out.println(++counter);
-
             dateTime = LocalDateTime.now();
             myFormatObj = DateTimeFormatter.ofPattern("'At date:' dd M yy 'Time:' hh:mm:ss");
             formattedDate = dateTime.format(myFormatObj);
@@ -60,10 +46,10 @@ public class sensorApplication {
             oxygenLevel = RandomOxygenLevel();
 
             // display data in sensor command
-            System.out.println("At date: " + formattedDate + ", sensed temperature is " + temperature);
-            System.out.println("At date: " + formattedDate + ", sensed heart rate is " + heartRate);
-            System.out.println("At date: " + formattedDate + ", sensed oxygen saturation is " + oxygenLevel);
-            System.out.println("\n");
+            System.out.println(formattedDate + ", sensed temperature is " + temperature);
+            System.out.println(formattedDate + ", sensed heart rate is " + heartRate);
+            System.out.println(formattedDate + ", sensed oxygen saturation is " + oxygenLevel);
+            System.out.println();
 
             // send values to personalApp server
             toServer.println((formattedDate).toString());
@@ -74,6 +60,7 @@ public class sensorApplication {
             // @todo skip sleep in last call
             Thread.sleep(5000);
         }
+        toServer.print("disconnect");
         clientSocket.close();
         System.exit(0);
 
@@ -96,9 +83,7 @@ public class sensorApplication {
 
     // Generating end execution time
     public static long Timer(long time) {
-        long start = System.currentTimeMillis();
-        long end = start + (time * 1000);
-        return end;
+        return System.currentTimeMillis() + (time * 1000);
     }
 
 }

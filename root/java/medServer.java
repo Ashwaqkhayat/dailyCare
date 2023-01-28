@@ -1,14 +1,4 @@
-
 //Medical Server
-/*
-Med Server To do: 
-have an infinite loop to accept connection requests from the Personal Server.
-The output: 
-date time Temprature
-date time heart rate
-date time Oxygen Saturations
-Decide whether the elder is in danger or not
-*/
 import java.net.*;
 import java.io.*;
 
@@ -20,53 +10,45 @@ public class medServer {
     public static String patientStatus;
 
     public static void main(String argv[]) throws Exception {
-        // Declare.
+        // Declaration.
         Socket socket;
         ServerSocket serverSocket;
         InputStreamReader readFromClient;
         BufferedReader fromClient;
 
-        // Host: localhost, Port: 3333.
+        // Create a Server Socket Host: localhost, Port: 3333.
         serverSocket = new ServerSocket(3333);
-        socket = serverSocket.accept();
-        System.out.println("~ The client is connected with the server ~");
+        
+        while (true) { // Outer while loop for controlling connections
+            // Recieve a new Connection from the Personal Server ==========================================================
+            System.out.println(">> Waiting for a personal server to connect ...");          // Display a message to ensure that the server is running okay
+            socket = serverSocket.accept();                                                 // Accept connection
+            System.out.println("~ The client is connected with the Medical server ~\n");    // Print an acceptance message
+            readFromClient = new InputStreamReader(socket.getInputStream());                // Read Inputs from client
+            fromClient = new BufferedReader(readFromClient);                                // create a buffer
+            
+            while (true) { // Inner while loop to keep recieving messages
+                
+                String checkConnection = fromClient.readLine();                             // Check if there are more messages to read
+                if(checkConnection==null || checkConnection.equalsIgnoreCase("disconnect")) break;
+                
+                // Get patient's information ===================================
+                temperature = Double.valueOf(checkConnection);
+                oxygenLevel = Double.valueOf(fromClient.readLine());
+                heartRate = Double.valueOf(fromClient.readLine());
 
-        while (true) {
-            // Get input from client.
-            readFromClient = new InputStreamReader(socket.getInputStream());
-            // outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+                boolean abmormal = Boolean.valueOf(fromClient.readLine());
 
-            fromClient = new BufferedReader(readFromClient);
-            // bufferedWriter = new BufferedWriter(outputStreamWriter);
-            // >>> NEED TO ADD While(true){from line 42 to line 55}
-            // Get patient's information
-            temperature = Double.valueOf(fromClient.readLine());
-            oxygenLevel = Double.valueOf(fromClient.readLine());
-            heartRate = Double.valueOf(fromClient.readLine());
-
-            System.out.println(fromClient.readLine());
-            System.out.println(fromClient.readLine());
-            System.out.println(fromClient.readLine());
-
-            // Print patient's status
-
-            // Choose and print appropriate action based on patient's information
-            if (Boolean.valueOf(fromClient.readLine())) {
-                appropraiteAction();
+                // Print patient's status ======================================
+                // Choose and print appropriate action based on patient's information
+                if (abmormal) {
+                    System.out.println(fromClient.readLine());
+                    System.out.println(fromClient.readLine());
+                    System.out.println(fromClient.readLine());
+                    appropraiteAction();
+                }
             }
-
-            if (1 < 1) {
-                break;
-            }
-
         }
-        // Closing connection
-        socket.close();
-        serverSocket.close();
-        readFromClient.close();
-        // outputStreamWriter.close();
-        fromClient.close();
-        // bufferedWriter.close();
     }
 
     // Choose and print appropriate action based on patient's information
