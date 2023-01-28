@@ -74,7 +74,8 @@ public class personalApp {
                     toServer.println("false");
                 }
             }
-            toServer.print("disconnect");nnection with the Medical Server
+            toServer.print("disconnect");
+            // Close the connection with the Medical Server
             clientSocket.close();
         }
     }
@@ -90,16 +91,16 @@ public class personalApp {
         }
         if (heartRate > 100) {
             alerted[1] = true;
-            heartRateStatus = "above normal " + heartRate;
+            heartRateStatus = "above normal " + heartRate.intValue() + ".";
         } else if (heartRate < 60) {
             alerted[2] = true;
-            heartRateStatus = "below normal " + heartRate;
+            heartRateStatus = "below normal " + heartRate.intValue() + ".";
         } else {
             heartRateStatus = "normal";
         }
         if (oxygenLevel < 75) {
             alerted[3] = true;
-            oxygenLevelStatus = "low " + oxygenLevel;
+            oxygenLevelStatus = "low " + oxygenLevel.intValue() + ".";
         } else {
             oxygenLevelStatus = "normal";
         }
