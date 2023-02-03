@@ -15,4 +15,4 @@ _CPCS361 project - KAU -FCIT - CS department_
 
 ## GUI :iphone:
 
-![image] (<https://github.com/rimagh19/dailyCare/blob/main/root/css/UI.jpg>)
+![image] (https://github.com/rimagh19/dailyCare/blob/main/root/css/UI.jpg?raw=true)
