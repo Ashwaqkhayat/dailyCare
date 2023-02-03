@@ -10,4 +10,4 @@ _CPCS361 project - KAU -FCIT - CS department_
 - [ ] Submit :tada:
 
 
-![This is an image] (.\root\css\UI.png)
+![This is an image] (/root/css/UI.png)
