@@ -10,4 +10,4 @@ _CPCS361 project - KAU -FCIT - CS department_
 - [ ] Submit :tada:
 
 
-![This is an image] (https://github.com/rimagh19/dailyCare/blob/main/root/css/UI.png?raw=true "our GUI")
+![image] (https://github.com/rimagh19/dailyCare/blob/main/root/css/UI.jpg )
