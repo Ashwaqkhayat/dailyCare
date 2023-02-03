@@ -9,5 +9,9 @@ _CPCS361 project - KAU -FCIT - CS department_
 - [ ] Documentation :page_with_curl:
 - [ ] Submit :tada:
 
-## Out GUI :iphone:
-![image] (https://github.com/rimagh19/dailyCare/blob/main/root/css/UI.jpg )
+
+
+## Servers :earth_asia:
+
+## GUI :iphone:
+![image] (https://github.com/rimagh19/dailyCare/blob/main/root/css/UI.jpg "a title")
