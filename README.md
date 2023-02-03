@@ -14,5 +14,5 @@ _CPCS361 project - KAU -FCIT - CS department_
 ## Servers :earth_asia:
 
 ## GUI :iphone:
-
-![image] (https://github.com/rimagh19/dailyCare/blob/8b0c48c1f508756180c44856fba60f6afd050448/root/css/UI.jpg"a title")
+        
+![image] (https://github.com/rimagh19/dailyCare/blob/main/root/css/UI.jpg)
