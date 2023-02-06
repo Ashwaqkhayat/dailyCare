@@ -21,17 +21,16 @@ public class sensorApplication {
 
     public static void main(String argv[]) throws Exception {
         
-        // Client Socket of SensorApp (To act as client)
+        // Client Socket of SensorApp to connect with Personal Server
         Socket clientSocket = new Socket("localhost", 6666);
         PrintWriter toServer = new PrintWriter(clientSocket.getOutputStream(), true);
 
-        // Read sensor execution time
+        // Read sensor execution time from Personal Server
         // if the user input is less than 60 sec, then set the timer to 60sec.
-        System.out.println("How long do you want the Sensor Application to run (in seconds)?" +
-                "\nNote: The minimum execution time is 60sec.");
-        long time = sc.nextLong();
+        BufferedReader fromServer= new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        long time = Long.valueOf(fromServer.readLine());
+        System.out.println("Time is: " + time);
         if (time < 60) time = 60;
-
         long timeLimit = Timer(time);
         
         // Keep connection open as long as Timer hasn't finished

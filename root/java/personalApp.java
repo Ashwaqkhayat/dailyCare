@@ -2,6 +2,7 @@
 //Personal Application Server
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class personalApp {
     public static Double temperature;
@@ -38,6 +39,13 @@ public class personalApp {
         Socket clientSocket = new Socket("localhost", 3333);                            // Client socket connection to port 3333.
         PrintWriter toServer = new PrintWriter(clientSocket.getOutputStream(), true);   // PrintWriter obj To send messages to the Medical Server
         
+            //Read execution Time from the user & send it to the Sensor Application
+            Scanner sc = new Scanner(System.in);
+            System.out.println("How long do you want the Sensor Application to run (in seconds)?" +
+                "\nNote: The minimum execution time is 60sec.");
+            long execTime = sc.nextLong();
+            toClient.println(execTime);
+
             while (true) { //While loop to keep recieving messages from the Sensor app 
                 String checkConnection = fromCLient.readLine();                         // Check if there are more messages to read
                 if(checkConnection==null || checkConnection.equalsIgnoreCase("disconnect")) break;
