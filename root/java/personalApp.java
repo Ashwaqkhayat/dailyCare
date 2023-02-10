@@ -1,8 +1,6 @@
-
 //Personal Application Server
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
 
 public class personalApp {
     public static Double temperature;
@@ -23,9 +21,10 @@ public class personalApp {
     public static void main(String argv[]) throws Exception {
         ServerSocket serverSocket = new ServerSocket(6666);
         String alertMessageIsSent = "An alert message is sent to the Medical Server.";
-        
+        personalDataGUI personalGUI = new personalDataGUI();
 
         while(true){ // Outer while loop for controlling connections
+            
         // Recieve a new Connection from the Sensor Application ==========================================================
         System.out.println(">> Waiting for the Sensor Application to connect ...");     // Display a message to ensure that the server is running okay
         Socket socket = serverSocket.accept();                                          // Accept connection
@@ -38,13 +37,7 @@ public class personalApp {
         // Create a Connection with the Medical Server ===================================================================
         Socket clientSocket = new Socket("localhost", 3333);                            // Client socket connection to port 3333.
         PrintWriter toServer = new PrintWriter(clientSocket.getOutputStream(), true);   // PrintWriter obj To send messages to the Medical Server
-        
-            //Read execution Time from the user & send it to the Sensor Application
-            Scanner sc = new Scanner(System.in);
-            System.out.println("How long do you want the Sensor Application to run (in seconds)?" +
-                "\nNote: The minimum execution time is 60sec.");
-            long execTime = sc.nextLong();
-            toClient.println(execTime);
+            
 
             while (true) { //While loop to keep recieving messages from the Sensor app 
                 String checkConnection = fromCLient.readLine();                         // Check if there are more messages to read
@@ -63,15 +56,22 @@ public class personalApp {
                 alerted = decision();
 
                 System.out.println(tempStatus2);
-                if (alerted[0]) { System.out.println(alertMessageIsSent); }
+                personalGUI.dataField.append(tempStatus2 + "\n");
+                if (alerted[0]) { System.out.println(alertMessageIsSent);
+                personalGUI.dataField.append(alertMessageIsSent + "\n");}
 
                 System.out.println(heartRateStatus2);
-                if (alerted[1] || alerted[2]) { System.out.println(alertMessageIsSent); }
+                personalGUI.dataField.append(heartRateStatus2 + "\n");
+                if (alerted[1] || alerted[2]) { System.out.println(alertMessageIsSent);
+                personalGUI.dataField.append(alertMessageIsSent + "\n");}
 
                 System.out.println(oxygenLevelStatus2);
-                if (alerted[3]) { System.out.println(alertMessageIsSent); }
+                personalGUI.dataField.append(oxygenLevelStatus2 + "\n");
+                if (alerted[3]) { System.out.println(alertMessageIsSent);
+                personalGUI.dataField.append(alertMessageIsSent + "\n");}
 
                 System.out.println();
+                personalGUI.dataField.append("\n");
 
                 if ((alerted[0] || alerted[1] || alerted[2] || alerted[3])) {
                     toServer.println("true");
@@ -81,6 +81,8 @@ public class personalApp {
                 } else {
                     toServer.println("false");
                 }
+                
+                personalGUI.setVisible(true);
             }
             toServer.print("disconnect");
             // Close the connection with the Medical Server
@@ -118,6 +120,10 @@ public class personalApp {
         oxygenLevelStatus2 = formattedDate + ", Oxygen saturation is " + oxygenLevelStatus + " ";
 
         return alerted;
+    }
+    
+    public static void terminate(){
+        System.exit(0);
     }
 
 }
